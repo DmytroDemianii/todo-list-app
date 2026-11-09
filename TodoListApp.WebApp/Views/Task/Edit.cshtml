@@ -1,0 +1,70 @@
+@model TaskViewModel
+@{
+    ViewData["Title"] = "Edit task";
+    var tagError = TempData[TodoListApp.WebApp.Controllers.TaskController.TagErrorKey] as string;
+    var commentError = TempData[TodoListApp.WebApp.Controllers.TaskController.CommentErrorKey] as string;
+}
+
+<h1>Edit task</h1>
+<form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+    <input type="hidden" asp-for="Id" />
+    <partial name="_TaskForm" />
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-link">Cancel</a>
+</form>
+
+@* US20, US21: tags are added and removed right away, separately from the task form above. *@
+<section class="tags-editor" aria-labelledby="tags-heading">
+    <h2 id="tags-heading">Tags</h2>
+
+    @if (Model.Tags.Count == 0)
+    {
+        <p class="text-muted">This task has no tags yet.</p>
+    }
+    else
+    {
+        <ul class="tag-list" aria-label="Tags of the task">
+            @foreach (var tag in Model.Tags)
+            {
+                <li>
+                    <form asp-action="RemoveTag" asp-route-id="@Model.Id" method="post" class="tag-chip tag-chip-removable">
+                        <input type="hidden" name="name" value="@tag" />
+                        <span>#@tag</span>
+                        <button type="submit" class="tag-remove" aria-label="Remove tag @tag" title="Remove tag">&times;</button>
+                    </form>
+                </li>
+            }
+        </ul>
+    }
+
+    <form asp-action="AddTag" asp-route-id="@Model.Id" method="post" class="add-tag-form">
+        <label for="tag-name" class="visually-hidden">New tag</label>
+        <input id="tag-name" name="Name" class="form-control" maxlength="50" placeholder="Add a tag, e.g. work" required />
+        <button type="submit" class="btn btn-outline-primary">Add tag</button>
+    </form>
+    @if (!string.IsNullOrEmpty(tagError))
+    {
+        <p class="text-danger mt-2">@tagError</p>
+    }
+</section>
+
+@* US23: add a comment; US24, US25: edit or delete the comments of the task. *@
+<section id="comments" class="tags-editor" aria-labelledby="comments-heading">
+    <h2 id="comments-heading">Comments</h2>
+
+    <form asp-controller="Comment" asp-action="Add" asp-route-taskId="@Model.Id" method="post" class="add-comment-form">
+        <label for="comment-text" class="visually-hidden">New comment</label>
+        <textarea id="comment-text" name="Text" class="form-control" rows="3" maxlength="1000" placeholder="Write a comment..." required></textarea>
+        <button type="submit" class="btn btn-outline-primary">Add comment</button>
+    </form>
+    @if (!string.IsNullOrEmpty(commentError))
+    {
+        <p class="text-danger mt-2">@commentError</p>
+    }
+
+    <partial name="_CommentList" model="Model" view-data='new ViewDataDictionary(ViewData) { ["CanManage"] = true }' />
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,66 @@
+@model TaskViewModel
+@{
+    ViewData["Title"] = Model.Title;
+    var culture = System.Globalization.CultureInfo.InvariantCulture;
+}
+
+<a asp-action="Index" asp-route-todoListId="@Model.TodoListId" class="back-link">&larr; Back to list</a>
+
+<article class="task-details @(Model.IsOverdue ? "task-overdue" : null)">
+    <div class="page-header">
+        <h1>@Model.Title</h1>
+        <div class="card-actions">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Edit</a>
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Delete</a>
+        </div>
+    </div>
+
+    @if (Model.IsOverdue)
+    {
+        <p class="overdue-badge">This task is overdue</p>
+    }
+
+    <dl class="task-properties">
+        <dt>Status</dt>
+        <dd><span class="status-badge @Model.Status.ToCssClass()">@Model.Status.ToDisplayName()</span></dd>
+
+        <dt>Due date</dt>
+        <dd>@(Model.DueDate?.ToString("d MMM yyyy", culture) ?? "—")</dd>
+
+        <dt>Created</dt>
+        <dd>@Model.CreatedDate.ToString("d MMM yyyy", culture)</dd>
+
+        <dt>Assignee</dt>
+        <dd>@(Model.AssigneeName ?? "Unknown user")</dd>
+
+        <dt>Description</dt>
+        <dd>@(string.IsNullOrWhiteSpace(Model.Description) ? "—" : Model.Description)</dd>
+
+        @* US17: the tags of the task; each tag leads to the tasks tagged with it (US19). *@
+        <dt>Tags</dt>
+        <dd>
+            @if (Model.Tags.Count == 0)
+            {
+                <span class="text-muted">No tags</span>
+            }
+            else
+            {
+                <ul class="tag-list" aria-label="Tags">
+                    @foreach (var tag in Model.Tags)
+                    {
+                        <li><a asp-controller="Tag" asp-action="Tasks" asp-route-name="@tag" class="tag-chip">#@tag</a></li>
+                    }
+                </ul>
+            }
+        </dd>
+    </dl>
+</article>
+
+@* US22: the comments added to the task by any user; they are added and managed on the edit page. *@
+<section id="comments" class="comments-section" aria-labelledby="comments-heading">
+    <div class="page-header">
+        <h2 id="comments-heading">Comments</h2>
+        <a asp-action="Edit" asp-route-id="@Model.Id" asp-fragment="comments" class="btn btn-sm btn-outline-primary">Add comment</a>
+    </div>
+    <partial name="_CommentList" model="Model" />
+</section>

@@ -1,0 +1,15 @@
+@model TodoListViewModel
+@{
+    ViewData["Title"] = "New to-do list";
+}
+
+<h1>New to-do list</h1>
+<form asp-action="Create" method="post">
+    <partial name="_TodoListForm" />
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="Index" class="btn btn-link">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

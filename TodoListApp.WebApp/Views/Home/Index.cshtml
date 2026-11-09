@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<section class="home-hero">
+    <h1>Welcome to your To-Do List</h1>
+    <p>Plan your work in lists, keep track of the tasks assigned to you and find any task in seconds.</p>
+    @if (User.Identity?.IsAuthenticated != true)
+    {
+        <div class="home-actions">
+            <a asp-controller="Account" asp-action="Login" class="btn btn-primary">Sign in</a>
+            <a asp-controller="Account" asp-action="Register" class="btn btn-outline-primary">Create an account</a>
+        </div>
+    }
+</section>
+
+@if (User.Identity?.IsAuthenticated == true)
+{
+<nav class="home-shortcuts" aria-label="Main sections">
+    <a asp-controller="TodoList" asp-action="Index" class="home-shortcut">
+        <span class="home-shortcut-title">My lists</span>
+        <span class="home-shortcut-text">Create to-do lists and manage their tasks.</span>
+    </a>
+    <a asp-controller="Task" asp-action="Assigned" class="home-shortcut">
+        <span class="home-shortcut-title">Assigned to me</span>
+        <span class="home-shortcut-text">See your active tasks and update their status.</span>
+    </a>
+    <a asp-controller="Task" asp-action="Search" class="home-shortcut">
+        <span class="home-shortcut-title">Search</span>
+        <span class="home-shortcut-text">Find tasks by title, creation date or due date.</span>
+    </a>
+</nav>
+}

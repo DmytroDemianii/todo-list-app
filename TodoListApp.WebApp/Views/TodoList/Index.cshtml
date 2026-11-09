@@ -1,0 +1,43 @@
+@model List<TodoListViewModel>
+@{
+    ViewData["Title"] = "My to-do lists";
+    var pageNumber = (int)ViewData["PageNumber"]!;
+    var hasNextPage = (bool)ViewData["HasNextPage"]!;
+}
+
+<div class="page-header">
+    <h1>My to-do lists</h1>
+    <a asp-action="Create" class="btn btn-primary">+ New list</a>
+</div>
+
+@if (Model.Count == 0)
+{
+    <p class="empty-state">You have no to-do lists yet.</p>
+}
+else
+{
+    <div class="todo-list-grid">
+        @foreach (var list in Model)
+        {
+            <article class="todo-list-card">
+                <h2><a asp-controller="Task" asp-action="Index" asp-route-todoListId="@list.Id">@list.Title</a></h2>
+                <p>@list.Description</p>
+                <div class="card-actions">
+                    <a asp-action="Edit" asp-route-id="@list.Id">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@list.Id" class="text-danger">Delete</a>
+                </div>
+            </article>
+        }
+    </div>
+}
+
+<nav class="pager" aria-label="Pages">
+    @if (pageNumber > 1)
+    {
+        <a asp-action="Index" asp-route-pageNumber="@(pageNumber - 1)">&larr; Previous</a>
+    }
+    @if (hasNextPage)
+    {
+        <a asp-action="Index" asp-route-pageNumber="@(pageNumber + 1)">Next &rarr;</a>
+    }
+</nav>

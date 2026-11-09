@@ -1,0 +1,55 @@
+@model TaskListViewModel
+@{
+    ViewData["Title"] = Model.TodoListTitle;
+}
+
+<a asp-controller="TodoList" asp-action="Index" class="back-link">&larr; My lists</a>
+
+<div class="page-header">
+    <h1>@Model.TodoListTitle</h1>
+    <a asp-action="Create" asp-route-todoListId="@Model.TodoListId" class="btn btn-primary">+ New task</a>
+</div>
+
+@if (Model.Tasks.Count == 0)
+{
+    <p class="empty-state">This list has no tasks yet.</p>
+}
+else
+{
+    <ul class="task-list">
+        @foreach (var task in Model.Tasks)
+        {
+            <li class="task-row @(task.IsOverdue ? "task-overdue" : null)">
+                <div class="task-main">
+                    <a asp-action="Details" asp-route-id="@task.Id" class="task-title">@task.Title</a>
+                    <div class="task-meta">
+                        <span class="status-badge @task.Status.ToCssClass()">@task.Status.ToDisplayName()</span>
+                        @if (task.DueDate.HasValue)
+                        {
+                            <span>Due @task.DueDate.Value.ToString("d MMM yyyy", System.Globalization.CultureInfo.InvariantCulture)</span>
+                        }
+                        @if (task.IsOverdue)
+                        {
+                            <span class="overdue-badge">Overdue</span>
+                        }
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a asp-action="Edit" asp-route-id="@task.Id">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@task.Id" class="text-danger">Delete</a>
+                </div>
+            </li>
+        }
+    </ul>
+}
+
+<nav class="pager" aria-label="Pages">
+    @if (Model.PageNumber > 1)
+    {
+        <a asp-action="Index" asp-route-todoListId="@Model.TodoListId" asp-route-pageNumber="@(Model.PageNumber - 1)">&larr; Previous</a>
+    }
+    @if (Model.HasNextPage)
+    {
+        <a asp-action="Index" asp-route-todoListId="@Model.TodoListId" asp-route-pageNumber="@(Model.PageNumber + 1)">Next &rarr;</a>
+    }
+</nav>

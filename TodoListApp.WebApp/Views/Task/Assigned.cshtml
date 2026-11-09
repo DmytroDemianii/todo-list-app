@@ -1,0 +1,92 @@
+@model AssignedTaskListViewModel
+@{
+    ViewData["Title"] = "Assigned to me";
+}
+
+<div class="page-header">
+    <h1>Assigned to me</h1>
+</div>
+
+<div class="list-toolbar">
+    <nav class="filter-tabs" aria-label="Filter by status">
+        @foreach (var filter in Enum.GetValues<AssignedTaskFilter>())
+        {
+            if (filter == Model.Filter)
+            {
+                <a asp-action="Assigned" asp-route-filter="@filter" asp-route-sort="@Model.Sort" class="filter-tab active" aria-current="page">@filter.ToDisplayName()</a>
+            }
+            else
+            {
+                <a asp-action="Assigned" asp-route-filter="@filter" asp-route-sort="@Model.Sort" class="filter-tab">@filter.ToDisplayName()</a>
+            }
+        }
+    </nav>
+
+    <form asp-action="Assigned" method="get" class="sort-form">
+        <input type="hidden" name="filter" value="@Model.Filter" />
+        <label for="sort">Sort by</label>
+        <select id="sort" name="sort" class="form-select form-select-sm" onchange="this.form.submit()">
+            @foreach (var sort in Enum.GetValues<AssignedTaskSort>())
+            {
+                <option value="@sort" selected="@(sort == Model.Sort)">@sort.ToDisplayName()</option>
+            }
+        </select>
+        <noscript><button type="submit" class="btn btn-sm btn-outline-secondary">Apply</button></noscript>
+    </form>
+</div>
+
+@if (Model.Tasks.Count == 0)
+{
+    <p class="empty-state">No tasks match this filter.</p>
+}
+else
+{
+    <ul class="task-list">
+        @foreach (var task in Model.Tasks)
+        {
+            <li class="task-row @(task.IsOverdue ? "task-overdue" : null)">
+                <div class="task-main">
+                    <a asp-action="Details" asp-route-id="@task.Id" class="task-title">@task.Title</a>
+                    <div class="task-meta">
+                        <span class="status-badge @task.Status.ToCssClass()">@task.Status.ToDisplayName()</span>
+                        @if (task.DueDate.HasValue)
+                        {
+                            <span>Due @task.DueDate.Value.ToString("d MMM yyyy", System.Globalization.CultureInfo.InvariantCulture)</span>
+                        }
+                        @if (task.IsOverdue)
+                        {
+                            <span class="overdue-badge">Overdue</span>
+                        }
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <form asp-action="ChangeStatus" asp-route-id="@task.Id" method="post" class="status-form">
+                        <input type="hidden" name="filter" value="@Model.Filter" />
+                        <input type="hidden" name="sort" value="@Model.Sort" />
+                        <input type="hidden" name="pageNumber" value="@Model.PageNumber" />
+                        <label for="status-@task.Id" class="visually-hidden">Status of @task.Title</label>
+                        <select id="status-@task.Id" name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                            @foreach (var status in Enum.GetValues<TaskItemStatus>())
+                            {
+                                <option value="@status" selected="@(status == task.Status)">@status.ToDisplayName()</option>
+                            }
+                        </select>
+                        <noscript><button type="submit" class="btn btn-sm btn-outline-secondary">Save</button></noscript>
+                    </form>
+                    <a asp-action="Index" asp-route-todoListId="@task.TodoListId">Open list</a>
+                </div>
+            </li>
+        }
+    </ul>
+}
+
+<nav class="pager" aria-label="Pages">
+    @if (Model.PageNumber > 1)
+    {
+        <a asp-action="Assigned" asp-route-filter="@Model.Filter" asp-route-sort="@Model.Sort" asp-route-pageNumber="@(Model.PageNumber - 1)">&larr; Previous</a>
+    }
+    @if (Model.HasNextPage)
+    {
+        <a asp-action="Assigned" asp-route-filter="@Model.Filter" asp-route-sort="@Model.Sort" asp-route-pageNumber="@(Model.PageNumber + 1)">Next &rarr;</a>
+    }
+</nav>

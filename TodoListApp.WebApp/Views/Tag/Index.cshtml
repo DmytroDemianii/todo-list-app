@@ -1,0 +1,37 @@
+@model TagListViewModel
+@{
+    ViewData["Title"] = "Tags";
+}
+
+<div class="page-header">
+    <h1>Tags</h1>
+</div>
+
+@if (Model.Tags.Count == 0)
+{
+    <p class="empty-state">No tags yet. Add tags to your tasks on the task edit page.</p>
+}
+else
+{
+    <ul class="tag-cloud" aria-label="All tags">
+        @foreach (var tag in Model.Tags)
+        {
+            <li>
+                <a asp-action="Tasks" asp-route-name="@tag.Name" class="tag-chip tag-chip-large">
+                    #@tag.Name <span class="tag-count" aria-label="@tag.TaskCount tasks">@tag.TaskCount</span>
+                </a>
+            </li>
+        }
+    </ul>
+}
+
+<nav class="pager" aria-label="Pages">
+    @if (Model.PageNumber > 1)
+    {
+        <a asp-action="Index" asp-route-pageNumber="@(Model.PageNumber - 1)">&larr; Previous</a>
+    }
+    @if (Model.HasNextPage)
+    {
+        <a asp-action="Index" asp-route-pageNumber="@(Model.PageNumber + 1)">Next &rarr;</a>
+    }
+</nav>

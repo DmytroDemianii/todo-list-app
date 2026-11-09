@@ -1,0 +1,710 @@
+/* ===================================================================
+   Design tokens (T17): every color and radius of the application.
+   =================================================================== */
+:root {
+  --app-primary: #4f46e5;
+  --app-primary-hover: #4338ca;
+  --app-primary-soft: #eef2ff;
+  --app-bg: #f5f6fa;
+  --app-surface: #ffffff;
+  --app-border: #e3e6ee;
+  --app-text: #1f2937;
+  --app-muted: #6b7280;
+  --app-danger: #dc2626;
+  --app-danger-soft: #fef2f2;
+  --app-tag: #6f42c1;
+  --app-tag-soft: #f3e8ff;
+  --app-radius: 0.75rem;
+  --app-shadow: 0 1px 2px rgba(17, 24, 39, 0.04), 0 4px 12px rgba(17, 24, 39, 0.04);
+  --app-shadow-hover: 0 6px 18px rgba(17, 24, 39, 0.08);
+}
+
+/* ===================================================================
+   Base elements and Bootstrap overrides
+   =================================================================== */
+html {
+  position: relative;
+  min-height: 100%;
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+body {
+  margin-bottom: 60px;
+  background: var(--app-bg);
+  color: var(--app-text);
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+a {
+  color: var(--app-primary);
+}
+
+a:hover {
+  color: var(--app-primary-hover);
+}
+
+.btn,
+.form-control,
+.form-select {
+  border-radius: 0.5rem;
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+  border-color: var(--app-primary);
+  box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.2);
+}
+
+.btn-primary {
+  border-color: var(--app-primary);
+  background-color: var(--app-primary);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  border-color: var(--app-primary-hover);
+  background-color: var(--app-primary-hover);
+}
+
+.btn-outline-primary {
+  border-color: var(--app-primary);
+  color: var(--app-primary);
+}
+
+.btn-outline-primary:hover {
+  border-color: var(--app-primary);
+  background-color: var(--app-primary);
+  color: #fff;
+}
+
+.form-check-input:checked {
+  border-color: var(--app-primary);
+  background-color: var(--app-primary);
+}
+
+/* ===================================================================
+   Page layout
+   =================================================================== */
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  color: var(--app-muted);
+  text-decoration: none;
+}
+
+.empty-state {
+  padding: 2rem;
+  border: 2px dashed var(--app-border);
+  border-radius: var(--app-radius);
+  color: var(--app-muted);
+  font-style: italic;
+  text-align: center;
+}
+
+.pager {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.pager a {
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.5rem;
+  background: var(--app-surface);
+  text-decoration: none;
+}
+
+.card-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* ===================================================================
+   US30: application menu, header and footer
+   =================================================================== */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+}
+
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.app-brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.4rem;
+  background: var(--app-primary);
+  color: #fff;
+  font-size: 1rem;
+}
+
+.app-menu .nav-link {
+  border-bottom: 2px solid transparent;
+  color: var(--app-muted);
+}
+
+.app-menu .nav-link:hover {
+  color: var(--app-primary);
+}
+
+.app-menu .nav-link.active {
+  border-bottom-color: var(--app-primary);
+  color: var(--app-primary);
+  font-weight: 600;
+}
+
+.navbar-search .form-control {
+  min-width: 200px;
+}
+
+.footer {
+  background: var(--app-surface);
+}
+
+/* ===================================================================
+   Home page
+   =================================================================== */
+.home-hero {
+  padding: 3rem 0 2rem;
+}
+
+.home-hero h1 {
+  font-size: 2.25rem;
+}
+
+.home-hero p {
+  color: var(--app-muted);
+  font-size: 1.1rem;
+}
+
+.home-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.home-shortcuts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.home-shortcut {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1.25rem;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow);
+  color: inherit;
+  text-decoration: none;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.home-shortcut:hover {
+  border-color: var(--app-primary);
+  box-shadow: var(--app-shadow-hover);
+  transform: translateY(-2px);
+}
+
+.home-shortcut-title {
+  color: var(--app-primary);
+  font-weight: 600;
+}
+
+.home-shortcut-text {
+  color: var(--app-muted);
+}
+
+/* ===================================================================
+   Epic 1: to-do lists
+   =================================================================== */
+.todo-list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.todo-list-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--app-border);
+  border-top: 4px solid var(--app-primary);
+  border-radius: var(--app-radius);
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.todo-list-card:hover {
+  box-shadow: var(--app-shadow-hover);
+  transform: translateY(-2px);
+}
+
+.todo-list-card h2 {
+  font-size: 1.25rem;
+}
+
+.todo-list-card h2 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.todo-list-card h2 a:hover {
+  text-decoration: underline;
+}
+
+.todo-list-card p {
+  flex-grow: 1;
+  color: var(--app-muted);
+}
+
+/* ===================================================================
+   Epic 2: tasks; US10: overdue tasks
+   =================================================================== */
+.task-list {
+  padding: 0;
+  list-style: none;
+}
+
+.task-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--app-border);
+  border-left: 4px solid var(--app-border);
+  border-radius: var(--app-radius);
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow);
+  transition: box-shadow 0.15s ease;
+}
+
+.task-row:hover {
+  box-shadow: var(--app-shadow-hover);
+}
+
+.task-row .card-actions {
+  align-items: center;
+}
+
+.task-title {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.task-title:hover {
+  color: var(--app-primary);
+}
+
+.task-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+  color: var(--app-muted);
+  font-size: 0.875rem;
+}
+
+.status-badge {
+  padding: 0.1rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-not-started {
+  background: #e9ecef;
+  color: #495057;
+}
+
+.status-in-progress {
+  background: var(--app-primary-soft);
+  color: var(--app-primary-hover);
+}
+
+.status-completed {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+.task-overdue {
+  border-left-color: var(--app-danger);
+  background: var(--app-danger-soft);
+}
+
+.overdue-badge {
+  color: var(--app-danger);
+  font-weight: 600;
+}
+
+.task-details {
+  padding: 1.25rem;
+  border: 1px solid var(--app-border);
+  border-left: 4px solid var(--app-border);
+  border-radius: var(--app-radius);
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow);
+}
+
+.task-properties {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.5rem 1.5rem;
+}
+
+.task-properties dd {
+  margin: 0;
+}
+
+/* ===================================================================
+   Epic 3: assigned tasks (filter, sorting, status change)
+   =================================================================== */
+.list-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.list-toolbar .filter-tabs {
+  margin-bottom: 0;
+}
+
+.filter-tab {
+  padding: 0.25rem 0.85rem;
+  border: 1px solid var(--app-border);
+  border-radius: 1rem;
+  color: #495057;
+  text-decoration: none;
+}
+
+.filter-tab:hover {
+  background: #f1f3f5;
+}
+
+.filter-tab.active {
+  border-color: var(--app-primary);
+  background: var(--app-primary);
+  color: #fff;
+}
+
+.sort-form,
+.status-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sort-form label {
+  color: var(--app-muted);
+  white-space: nowrap;
+}
+
+.sort-form .form-select,
+.status-form .form-select {
+  width: auto;
+}
+
+/* ===================================================================
+   Epic 4: search
+   =================================================================== */
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow);
+}
+
+.search-field {
+  flex: 1 1 160px;
+}
+
+.search-field-wide {
+  flex: 2 1 240px;
+}
+
+.search-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ===================================================================
+   Epic 5: tags
+   =================================================================== */
+.tag-list,
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.1rem 0.6rem;
+  border-radius: 1rem;
+  background: var(--app-tag-soft);
+  color: var(--app-tag);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+a.tag-chip:hover {
+  background: #e5d4fc;
+}
+
+.tag-chip-large {
+  padding: 0.3rem 0.85rem;
+  font-size: 1rem;
+}
+
+.tag-chip-removable {
+  margin: 0;
+}
+
+.tag-count {
+  padding: 0 0.45rem;
+  border-radius: 1rem;
+  background: var(--app-primary);
+  color: #fff;
+  font-size: 0.75rem;
+}
+
+.tag-remove {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.tag-remove:hover {
+  color: var(--app-danger);
+}
+
+.tags-editor {
+  max-width: 40rem;
+  padding-top: 1.5rem;
+  margin-top: 2rem;
+  border-top: 1px solid var(--app-border);
+}
+
+.tags-editor h2 {
+  font-size: 1.25rem;
+}
+
+.add-tag-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+/* ===================================================================
+   Epic 6: comments
+   =================================================================== */
+.comments-section {
+  margin-top: 2rem;
+}
+
+.comments-section h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0;
+  margin: 1rem 0 0;
+  list-style: none;
+}
+
+.comment {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow);
+}
+
+.comment-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--app-muted);
+  font-size: 0.875rem;
+}
+
+.comment-author {
+  color: var(--app-text);
+  font-weight: 600;
+}
+
+.comment-edited {
+  font-style: italic;
+}
+
+.comment-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+.comment-actions form {
+  margin: 0;
+}
+
+.comment-text {
+  margin: 0.4rem 0 0;
+  white-space: pre-wrap;
+}
+
+.add-comment-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.comment-edit-form {
+  max-width: 40rem;
+}
+
+/* ===================================================================
+   Epic 7: accounts
+   =================================================================== */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: 1rem;
+}
+
+.user-menu form {
+  margin: 0;
+}
+
+.user-email {
+  max-width: 14rem;
+  overflow: hidden;
+  color: #495057;
+  font-size: 0.875rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.auth-card {
+  max-width: 26rem;
+  padding: 2rem;
+  margin: 2rem auto;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow);
+}
+
+.auth-card h1 {
+  font-size: 1.6rem;
+}
+
+.auth-subtitle {
+  color: var(--app-muted);
+}
+
+.auth-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.auth-footer {
+  margin: 1.25rem 0 0;
+  color: var(--app-muted);
+  text-align: center;
+}
+
+/* ===================================================================
+   Narrow screens
+   =================================================================== */
+@media (max-width: 575.98px) {
+  .task-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .user-menu {
+    margin: 0.5rem 0 0;
+  }
+
+  .navbar-search .form-control {
+    min-width: 0;
+    margin-top: 0.5rem;
+  }
+}

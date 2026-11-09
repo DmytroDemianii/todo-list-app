@@ -1,0 +1,53 @@
+@model TaskViewModel
+@{
+    // The edit page passes CanManage = true to show the edit and delete controls (US24, US25).
+    var canManage = ViewData["CanManage"] as bool? ?? false;
+    var pageAction = canManage ? "Edit" : "Details";
+    var culture = System.Globalization.CultureInfo.InvariantCulture;
+}
+
+@if (Model.Comments.Count == 0)
+{
+    <p class="text-muted">@(Model.CommentPageNumber > 1 ? "No more comments." : "No comments yet.")</p>
+}
+else
+{
+    <ul class="comment-list">
+        @foreach (var comment in Model.Comments)
+        {
+            <li class="comment">
+                <div class="comment-header">
+                    <span class="comment-author">@(comment.AuthorName ?? "Unknown user")</span>
+                    <time datetime="@comment.CreatedDate.ToString("o", culture)">@comment.CreatedDate.ToString("d MMM yyyy, HH:mm", culture)</time>
+                    @if (comment.UpdatedDate.HasValue)
+                    {
+                        <span class="comment-edited" title="Edited @comment.UpdatedDate.Value.ToString("d MMM yyyy, HH:mm", culture)">(edited)</span>
+                    }
+                    @if (canManage)
+                    {
+                        <span class="comment-actions">
+                            <a asp-controller="Comment" asp-action="Edit" asp-route-id="@comment.Id">Edit</a>
+                            <form asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.Id" method="post"
+                                  onsubmit="return confirm('Delete this comment?');">
+                                <input type="hidden" name="taskId" value="@Model.Id" />
+                                <button type="submit" class="btn btn-link btn-sm text-danger p-0">Delete</button>
+                            </form>
+                        </span>
+                    }
+                </div>
+                <p class="comment-text">@comment.Text</p>
+            </li>
+        }
+    </ul>
+}
+
+<nav class="pager" aria-label="Pages">
+    @if (Model.CommentPageNumber > 1)
+    {
+        <a asp-controller="Task" asp-action="@pageAction" asp-route-id="@Model.Id" asp-route-commentPage="@(Model.CommentPageNumber - 1)" asp-fragment="comments">&larr; Newer comments</a>
+    }
+    @if (Model.HasNextCommentPage)
+    {
+        <a asp-controller="Task" asp-action="@pageAction" asp-route-id="@Model.Id" asp-route-commentPage="@(Model.CommentPageNumber + 1)" asp-fragment="comments">Older comments &rarr;</a>
+    }
+</nav>

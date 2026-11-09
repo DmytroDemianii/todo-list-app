@@ -1,0 +1,24 @@
+@model CommentViewModel
+@{
+    ViewData["Title"] = "Edit comment";
+}
+
+<a asp-controller="Task" asp-action="Edit" asp-route-id="@Model.TaskId" asp-fragment="comments" class="back-link">&larr; Back to the task</a>
+
+<h1>Edit comment</h1>
+<form asp-action="Edit" asp-route-id="@Model.Id" method="post" class="comment-edit-form">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="TaskId" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-3">
+        <label for="Text" asp-for="Text" class="form-label"></label>
+        <textarea asp-for="Text" class="form-control" rows="5"></textarea>
+        <span asp-validation-for="Text" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-controller="Task" asp-action="Edit" asp-route-id="@Model.TaskId" asp-fragment="comments" class="btn btn-link">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

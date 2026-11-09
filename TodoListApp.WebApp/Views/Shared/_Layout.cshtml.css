@@ -1,0 +1,27 @@
+﻿/* Layout-only styles; the colors of links and buttons come from the design tokens in wwwroot/css/site.css. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+.border-top {
+  border-top: 1px solid var(--app-border);
+}
+
+.border-bottom {
+  border-bottom: 1px solid var(--app-border);
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(17, 24, 39, .05);
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+}
